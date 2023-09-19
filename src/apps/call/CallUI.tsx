@@ -31,10 +31,11 @@ import { useLayoutPluggable } from '~/common/layout/store-applayout';
 function CallMenuItems(props: {
   pushToTalk: boolean,
   setPushToTalk: (pushToTalk: boolean) => void,
+  disableVoiceSelector: boolean,
 }) {
 
   // external state
-  const { voicesDropdown } = useVoiceDropdown(false);
+  const { voicesDropdown } = useVoiceDropdown(false, props.disableVoiceSelector);
 
   const handlePushToTalkToggle = () => props.setPushToTalk(!props.pushToTalk);
 
@@ -245,8 +246,8 @@ export function CallUI(props: {
   // pluggable UI
 
   const menuItems = React.useMemo(() =>
-      <CallMenuItems pushToTalk={pushToTalk} setPushToTalk={setPushToTalk} />
-    , [pushToTalk],
+      <CallMenuItems pushToTalk={pushToTalk} setPushToTalk={setPushToTalk} disableVoiceSelector={!!personaVoiceId} />
+    , [pushToTalk, personaVoiceId],
   );
 
   useLayoutPluggable(chatLLMDropdown, null, menuItems);
